@@ -11,7 +11,7 @@ be rolled back or a fix can be checked in for another build attempt.
 
 If you want to build your code, there must be a computer available that can monitor the source control repository, perform the checkout, and execute the build.  Dedicating a machine for this purpose is not always feasible for a variety of reasons, so this solution uses the [Amazon Web Services (AWS) CodeBuild](https://aws.amazon.com/codebuild/) to allocate resources that perform all the build activities when a change is checked into the source control repository.
 
-This example uses GitHub as the source control repository and AWS CodeBuild as the build infrastructure.  Currently the image in unlikely to work with any cloud provider other than AWS. Other cloud providers have similar capabilities and this image could be modified to be compatible with any cloud provider.  
+This example uses GitHub as the source control repository and AWS CodeBuild as the build infrastructure.  Currently the [public image](https://cloud.docker.com/u/nleach9999/repository/docker/nleach9999/vortx3735 "Docker Hub") in unlikely to work with any cloud provider other than AWS. Other cloud providers have similar capabilities and this image could be modified to be compatible with any cloud provider.  
 
 Build notifications are sent to a team's Slack channel.  If you're not using Slack, this image may be modified to use a notification method other than Slack.
 
