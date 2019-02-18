@@ -139,7 +139,7 @@ For the VorTx 3735 robot code, this is the line containing the badge URL for the
 
 # Building the Docker Image
 
-Building the Docker image may be done with Gradle.  To build the image, build the task `DockerBuild`:
+Building the Docker image is not required for enabling your own CI build with AWS and Slack.  If you REALLY are determine to build the Docker image, it may be done with Gradle.  To build the image, build the task `DockerBuild`:
 
 ```
 gradlew DockerBuild
