@@ -63,9 +63,94 @@ You can review the integration settings to change the name used by the web hook,
 
 ## Step 2: Configure AWS CodeBuild
 
+Go to the AWS CodeBuild **Build Projects** windows and click the `Create Build Project` button.
 
 
+![CodeBuild Main Window](images/CodeBuildProjects.png "CodeBuild Main Window")
 
+
+Type in the name of your project (*the screen shot shows spaces **but** don't use spaces in the name*), an optional description, and click `Enable Build Badge` if you want to have the badge (![CodeBuild Badge](images/CodeBuildBadge.svg "CodeBuild Badge")) displayed in the README markdown file on the repository browser page.
+
+![CodeBuild Project Settings](images/CodeBuildProjectConfig.png "CodeBuild Project Settings")
+
+
+In the **Source** configuration, select the `Source Provider` from the dropdown.  In this case, GitHub is used.
+
+You may select `Public Repository` and enter the `git clone` URL or you may enter your GitHub credentials and select `Repository in my GitHub Account`.  I have repositories in my GitHub account that are private, so I selected `Repository in my GitHub Account` and the dropdown `GitHub Repository` appears with a list of all repositories to which I have access.
+
+*There are some security settings that are needed to enable CodeBuild to ask GitHub for a list of repositories and potentially for instructing GitHub to send notifications to CodeBuild for each repository push.  [This article](https://stackoverflow.com/questions/32397338/aws-codepipeline-not-able-to-access-organizations-repositories "Article about GitHub security settings") may be helpful if you can't see your repositories in the dropdown*
+
+![CodeBuild Source](images/CodeBuildSource.png "CodeBuild Source")
+
+
+In the **Primary source webhook events** section, select the checkbox `Rebuild every time a code change is pushed to this repository`.
+
+![CodeBuild Webhook](images/CodeBuildWebhook.png "CodeBuild Webhook")
+
+In the **Environment** section: 
+* Set the **Environment image** to `Custom Image`
+* Set the **Environment type** to **Linux**
+* Set the **Image registry** as `Other Registry`
+* Set the **External registry URL** to `registry.hub.docker.com/nleach9999/vortx3735:build-2019`. 
+
+*(Please look at [the Docker Hub page](https://cloud.docker.com/u/nleach9999/repository/docker/nleach9999/vortx3735 "Docker Hub") for the Docker image to determine which tag is most suitable for your use.)*
+
+![CodeBuild Environment](images/CodeBuildEnvironment1.png "CodeBuild Environment")
+
+Scroll down in the **Environment** section and expand the **Additional configuration** section.  Some environment variables need to be set to enable the Docker image to send Slack notifications and do timezone conversions for the report.
+
+Add two environment variables:
+
+* SLACK_HOOK_URI *(required)* - Set to the URL that was created when you configured the `Incoming WebHooks Integration` in Slack.
+* REPORT_TIMEZONE *(optional)* - If this variable is not provided, all times reported in the Slack notification will be in UTC.  The timezone string must be from the [list of supported time zone strings](https://gist.github.com/heyalexej/8bf688fd67d7199be4a1682b3eec7568 "pytz timezone strings").
+
+![CodeBuild Environment](images/CodeBuildEnvironment2.png "CodeBuild Environment")
+
+Scroll to the bottom of the project configuration and select `Create build project` to complete the setup.
+
+![CodeBuild Setup Complete](images/CodeBuildSave.png "CodeBuild Setup Complete")
+
+
+The CI build should now be working.  You can either click the `Start build` button or push a commit to your source code repository to check that the build is complete.  In this example, you can see the build failed.
+
+![CodeBuild Build Test](images/CodeBuildBuild.png "CodeBuild Build Test")
+
+Upon failure, a message is sent to the `#ci_demo` Slack channel with the build log attached.  Click the `Show more` link to expand the view to see the details of the failure.
+
+![Slack Notify](images/SlackNotify.png "Slack Notify")
+
+# Miscellaneous Notes
+
+## Build Badge
+
+![CodeBuild Badge](images/CodeBuildBadge.svg "CodeBuild Badge")
+
+It is very helpful to have the build status badge in the README<span>.</span>md.  In the build project definition screen, there is a button to **Copy badge URL** that will give you a URL that you can paste into README<span>.</span>md like so:
+
+```
+![Build Status](COPIED URL GOES HERE "Build Status")
+```
+
+For the VorTx 3735 robot code, this is the line containing the badge URL for their CodeBuild project.
+
+```
+![Build Status](https://codebuild.us-east-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiNmUwZFM5alRSQjFQSS9KWGp4SmErZ0l4YjgzVHZQVlp2TFN0T1VpTDZndy8vbzNKZytkcWloK0pHc3crVG1Gam4xeU9VOVVMRlQvQ3dQZ1p0azJKZk1rPSIsIml2UGFyYW1ldGVyU3BlYyI6IkpXQmJkekZIWTdaSmpOOGciLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master "Build Status")
+```
 
 # Building the Docker Image
-TODO: modify gradle script, tasks
+
+Building the Docker image may be done with Gradle.  To build the image, build the task `DockerBuild`:
+
+```
+gradlew DockerBuild
+```
+
+The build may take some time as it downloads the FRC 2019 toolset (1GB+) to build the complete image. You may view the [Dockerfile](Docker/Dockerfile "Dockerfile") to see some ARG variables that may be used to instruct the build to use a local version of the FRC 2019 toolset tarball.
+
+
+The `ImageTag` task will tag the image as it is in the [Docker Hub public image](https://cloud.docker.com/u/nleach9999/repository/docker/nleach9999/vortx3735 "Docker Hub"):
+
+![Image Tags](images/DockerTags.png "Image Tags")
+
+The `ImagePush` task will attempt to push the image to my Docker hub repository, which should fail for anyone except myself.  You may modify the Gradle script to push your customizations to your own repository.
+
