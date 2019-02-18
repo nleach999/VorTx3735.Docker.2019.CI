@@ -9,11 +9,13 @@ be rolled back or a fix can be checked in for another build attempt.
 
 # How does it work?
 
-If you want to build your code, there must be a computer available that can monitor the source control repository, perform the checkout, and execute the build.  Dedicating a machine for this purpose is not always feasible for a variety of reasons, so this uses the [Amazon Web Services (AWS) CodeBuild](https://aws.amazon.com/codebuild/) to allocate resources that perform all the build activities only when a change is checked into the source control repository.
+If you want to build your code, there must be a computer available that can monitor the source control repository, perform the checkout, and execute the build.  Dedicating a machine for this purpose is not always feasible for a variety of reasons, so this solution uses the [Amazon Web Services (AWS) CodeBuild](https://aws.amazon.com/codebuild/) to allocate resources that perform all the build activities when a change is checked into the source control repository.
 
-This example uses GitHub as the source control repository and AWS CodeBuild as the build infrastructure.  This does not mean this Docker image is limited to working in AWS; other cloud services provide similar capabilities thus the image may be utilized in Azure, Google Cloud, and so forth.  Build notifications are sent to a team's Slack channel.  If there is interest in other types of integrations, there are a variety of ways to make your own custom image.
+This example uses GitHub as the source control repository and AWS CodeBuild as the build infrastructure.  Currently the image in unlikely to work with any cloud provider other than AWS. Other cloud providers have similar capabilities and this image could be modified to be compatible with any cloud provider.  
 
-All the cloud services charge for the code build service.  It is relatively inexpensive; AWS, for example, has a free tier that may cover all build activities for some teams.  For the VorTX 3735 team, the first month cost $0.26 USD to cover builds on two repositories.
+Build notifications are sent to a team's Slack channel.  If you're not using Slack, this image may be modified to use a notification method other than Slack.
+
+All the cloud services charge for the code build service.  It is relatively inexpensive; AWS, for example, has a free tier that may cover all build activities for some teams.  For the VorTX 3735 team, the first month's bill totaled $0.26 USD to cover builds on two repositories.  As of the writing of this README, our estimated CodeBuild expenses for this month totals $0.06 USD.
 
 # Step-by-Step Instructions
 
@@ -60,3 +62,10 @@ You can review the integration settings to change the name used by the web hook,
 ![Slack URL](images/SlackWebhookURL.png "Slack URL")
 
 ## Step 2: Configure AWS CodeBuild
+
+
+
+
+
+# Building the Docker Image
+TODO: modify gradle script, tasks
