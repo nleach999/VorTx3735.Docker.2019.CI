@@ -1,4 +1,6 @@
-# Continuous Integration (CI) with Docker, AWS CodeBuild, and Slack
+# Continuous Integration (CI) for FRC robot programming projects
+### Using Docker, AWS CodeBuild, and Slack with the FRC 2019 toolset
+
 Greetings from the [VorTX 3735](http://www.vortx3735.org/ "VorTX 3735") FRC Robotics Team in Houston, TX!
 
 If you have ever experienced members of your team checking in code that will not build on any other team member's box, a [Continuous Integration (CI)](https://en.wikipedia.org/wiki/Continuous_integration) build is for you!
