@@ -1,0 +1,15 @@
+plugins
+{
+    id "base"
+}
+
+// This build script is not complete.  It needs to install Python packages locally before creating the archive
+// that gets sent to AWS Lambda.
+
+task package_lambda (type: Zip, group: "AWS Lambda Build", description: "Builds the lambda deployment package") {
+    from ".", "package"
+    exclude "*gradle*"
+    setArchiveName "slack_notify_lambda.zip"
+
+}
+

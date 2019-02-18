@@ -1,0 +1,13 @@
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+
+*.zip
+*.tar
+*.tar.gz
+__pycache__
+.settings
+.vscode/
+.project
