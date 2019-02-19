@@ -139,9 +139,16 @@ For the VorTx 3735 robot code, this is the line containing the badge URL for the
 ![Build Status](https://codebuild.us-east-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiNmUwZFM5alRSQjFQSS9KWGp4SmErZ0l4YjgzVHZQVlp2TFN0T1VpTDZndy8vbzNKZytkcWloK0pHc3crVG1Gam4xeU9VOVVMRlQvQ3dQZ1p0azJKZk1rPSIsIml2UGFyYW1ldGVyU3BlYyI6IkpXQmJkekZIWTdaSmpOOGciLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master "Build Status")
 ```
 
+
+## C++ Builds
+
+This image has the entire FRC 2019 toolset installed but has only been tested with Java builds.  If someone points me to an example C++ source tree that compiles with the FRC 2019 toolset, I would be happy to test the C++ build capabilities.
+
+
+
 # Building the Docker Image
 
-Building the Docker image is not required for enabling your own CI build with AWS and Slack.  If you REALLY are determine to build the Docker image, it may be done with Gradle.  To build the image, build the task `DockerBuild`:
+**Building the Docker image is not required for enabling your own CI build with AWS and Slack.**  If you REALLY are determine to build the Docker image, it may be done with Gradle.  To build the image, build the task `DockerBuild`:
 
 ```
 gradlew DockerBuild
