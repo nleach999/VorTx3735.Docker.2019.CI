@@ -2,12 +2,20 @@ FROM busybox:1.30 as file_copy
 
 
 # Use --build-arg FRC_TOOLS_VERSION=YYYY.M.m as part of the build to modify the build version
-ARG FRC_TOOLS_VERSION=2019.3.2
+ARG FRC_TOOLS_VERSION
 ARG FRC_TOOLS_FILENAME=WPILib_Linux-$FRC_TOOLS_VERSION.tar.gz
 
 # Use --build-arg FRC_TOOLS_URI_BASE={path} to perform actions like copying the file from a local
 # copy of the tools file.  If not, each build will download the 1GB+ tools archive.
 ARG FRC_TOOLS_URI_BASE=https://github.com/wpilibsuite/allwpilib/releases/download/v$FRC_TOOLS_VERSION
+
+RUN if [ -z "$FRC_TOOLS_VERSION" ] && [ "$FRC_TOOLS_URI_BASE" == "https://github.com/wpilibsuite/allwpilib/releases/download/v" ]; \
+then \
+echo At least one of the following ARGs must be set: ;\
+echo FRC_TOOLS_VERSION YYYY.MM.mm ;\
+echo FRC_TOOLS_URI_BASE ;\
+exit 1 ;\
+fi
 
 ARG FRC_TOOLS=$FRC_TOOLS_URI_BASE/$FRC_TOOLS_FILENAME
 

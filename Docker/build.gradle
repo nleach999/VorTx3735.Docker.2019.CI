@@ -6,8 +6,8 @@ plugins
 defaultTasks 'DockerBuild'
 
 ext.frcToolsYear = "2019"
-ext.frcToolsMajor = "3"
-ext.frcToolsMinor = "2"
+ext.frcToolsMajor = "4"
+ext.frcToolsMinor = "1"
 
 ext.dockerHubAccount = "nleach9999"
 
@@ -34,7 +34,7 @@ task ImagePush (type: Exec, group: "Docker Image", dependsOn: "ImageTag", descri
 
 }
 
-task ImageTag (type:Exec, group: "Docker Image", description: "Tags the image in preparation for pushing to DockerHub") {
+task ImageTag (type:Exec, group: "Docker Image", description: "Tags the image in preparation for pushing to DockerHub", dependsOn: "DockerBuild") {
   outputs.upToDateWhen { return false }
 
   doFirst {
@@ -49,6 +49,7 @@ task ImageTag (type:Exec, group: "Docker Image", description: "Tags the image in
     exec {
       commandLine 'docker', 'tag', "${imageNameRoot}-default", "${dockerHubAccount}/${imageNameRoot}-${frcToolsYear}-${frcToolsMajor}-${frcToolsMinor}"
     }
+
   }
 
   commandLine 'docker', 'tag', "${imageNameRoot}-default", "${dockerHubAccount}/${imageNameRoot}"
@@ -56,7 +57,7 @@ task ImageTag (type:Exec, group: "Docker Image", description: "Tags the image in
 
 task DockerBuild (type: Exec, group: "Docker Image", description: "Builds the FRC CI Docker Image") {
   outputs.upToDateWhen { return false }
-  commandLine 'docker', 'build', '-t', "${imageNameRoot}default", '--build-arg', "FRC_TOOLS_VERSION=${frcToolsYear}.${frcToolsMajor}.${frcToolsMinor}", 
+  commandLine 'docker', 'build', '-t', "${imageNameRoot}-default", '--build-arg', "FRC_TOOLS_VERSION=${frcToolsYear}.${frcToolsMajor}.${frcToolsMinor}", 
     "${project.projectDir}"
 
 }
